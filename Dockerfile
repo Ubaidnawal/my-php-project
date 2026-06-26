@@ -3,6 +3,7 @@ RUN install-php-extensions pdo pdo_mysql mysqli
 COPY . /app
 RUN chown -R www-data:www-data /app && \
     ln -s /app/Image /app/Website/Image && \
+    ln -s /app/ajax /app/Website/ajax && \
     rm -rf /app/.git
 RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 {
@@ -14,16 +15,6 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 	root * /app/Website
 	php_server
 
-	route /ajax/* {
-		uri strip_prefix /ajax
-		root * /app/ajax
-		php_server
-	}
-	route /Gmail\ Website/ajax/* {
-		uri strip_prefix /Gmail\ Website/ajax
-		root * /app/ajax
-		php_server
-	}
 	route /admin/* {
 		uri strip_prefix /admin
 		root * /app/admin
