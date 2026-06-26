@@ -1,4 +1,6 @@
-FROM dunglas/frankenphp:1-php8.2
-RUN install-php-extensions pdo pdo_mysql mysqli
-COPY . /app
-RUN chown -R www-data:www-data /app && chmod -R 755 /app
+FROM php:8.2-apache
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN a2enmod rewrite
+COPY . /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/
+EXPOSE 80
