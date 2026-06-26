@@ -1,24 +1,20 @@
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-RUN set -eux \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        libpng-dev \
-        libjpeg-dev \
-        libfreetype6-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli gd \
-    && a2enmod rewrite
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install pdo pdo_mysql mysqli gd \
+    && a2enmod rewrite \
+    && apt-get clean
 
-# Fix MPM: sed out all conflicting LoadModule lines for MPMs, keep prefork
-RUN sed -i '/mpm_event/s/^/#/' /etc/apache2/mods-enabled/mpm_event.load 2>/dev/null || true && \
-    sed -i '/mpm_worker/s/^/#/' /etc/apache2/mods-enabled/mpm_worker.load 2>/dev/null || true && \
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.* && \
     a2enmod mpm_prefork
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html/
-RUN chown -R www-data:www-data /var/www/html/ && \
-    chmod -R 755 /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/
+RUN chmod -R 755 /var/www/html/
 
 EXPOSE 80
