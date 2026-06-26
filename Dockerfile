@@ -1,7 +1,7 @@
-FROM php:8.1-apache
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.* && a2enmod mpm_prefork
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-RUN a2enmod rewrite
+FROM php:8.2-apache-bookworm
+RUN apt-get update && apt-get install -y apache2 && \
+    a2dismod mpm_event mpm_worker && a2enmod mpm_prefork rewrite && \
+    docker-php-ext-install pdo pdo_mysql mysqli
 COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/
 EXPOSE 80
