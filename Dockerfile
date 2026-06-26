@@ -11,26 +11,36 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 
 :{$PORT:80} {
 	root * /app/Website
+
+	# Static file routes first
+	@image {
+		path /Image/*
+	}
+	rewrite @image /Image/{path}
+	root @image /app
+	file_server @image
+
+	@ajax {
+		path /ajax/*
+	}
+	rewrite @ajax /ajax/{path}
+	root @ajax /app/ajax
+	php_server @ajax
+
+	@admin {
+		path /admin/*
+	}
+	rewrite @admin /admin/{path}
+	root @admin /app/admin
+	php_server @admin
+
+	@assets {
+		path /assets/*
+	}
+	root @assets /app/assets
+	file_server @assets
+
+	# Everything else to Website
 	php_server
-
-	route /ajax/* {
-		uri strip_prefix /ajax
-		root * /app/ajax
-		php_server
-	}
-	route /admin/* {
-		uri strip_prefix /admin
-		root * /app/admin
-		php_server
-	}
-	route /assets/* {
-		root * /app/assets
-		file_server
-	}
-	route /Image/* {
-		root * /app/Image
-		file_server
-	}
 }
-
 CADDY
