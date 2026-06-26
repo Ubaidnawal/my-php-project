@@ -11,6 +11,7 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 :{$PORT:80} {
 	root * /app/Website
 	php_server
+
 	route /ajax/* {
 		uri strip_prefix /ajax
 		root * /app/ajax
@@ -20,6 +21,10 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 		uri strip_prefix /admin
 		root * /app/admin
 		php_server
+	}
+	route /assets/* {
+		root * /app/assets
+		file_server
 	}
 	route /Image/* {
 		root * /app/Image
