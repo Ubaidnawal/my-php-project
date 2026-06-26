@@ -1,0 +1,30 @@
+# Environment / config
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (if any)
+node_modules/
+npm-debug.log*
+
+# Composer (PHP)
+/vendor/
+composer.lock
+
+# Railway
+.railway/

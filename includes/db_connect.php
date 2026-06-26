@@ -1,8 +1,10 @@
 <?php
 // includes/db_connect.php
+// 🔴 IMPORTANT: Replace with your AwardSpace MySQL details
+//    AwardSpace Dashboard → Hosting Tools → MySQL Databases
 
-$host = 'localhost';
-$dbname = 'gmail_website';
+$host     = 'localhost';
+$dbname   = 'gmail_website';
 $username = 'root';
 $password = '';
 

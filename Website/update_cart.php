@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../includes/db_connect.php';
 
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     echo json_encode(['success' => false, 'message' => 'Cart is empty.']);
@@ -23,6 +22,7 @@ foreach ($_SESSION['cart'] as &$item) {
         break;
     }
 }
+unset($item);
 
 if (!$updated) {
     echo json_encode(['success' => false, 'message' => 'Product not found.']);

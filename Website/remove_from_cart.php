@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../includes/db_connect.php';
 
 $product_id = isset($_POST['id']) ? trim($_POST['id']) : '';
 

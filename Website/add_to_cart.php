@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once '../includes/db_connect.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -23,6 +22,7 @@ foreach ($_SESSION['cart'] as &$item) {
         break;
     }
 }
+unset($item);
 if (!$found) {
     $_SESSION['cart'][] = [
         'id' => $product_id,

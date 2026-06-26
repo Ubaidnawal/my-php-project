@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if (data.success) {
+                showToast('🛒 ' + productName + ' added to cart!');
                 if (data.cart_count !== undefined) {
                     updateCartCount(data.cart_count);
                 }
@@ -101,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
+            showToast('Error adding to cart. Please try again.', 'error');
             console.error('Add to cart error:', error);
         });
     });

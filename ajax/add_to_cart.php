@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once __DIR__ . '/../includes/db_connect.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];

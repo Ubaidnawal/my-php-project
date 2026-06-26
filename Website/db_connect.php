@@ -1,11 +1,9 @@
 <?php
-
-$host = 'sql305.infinityfree.com';  
-$dbname = 'if0_42250501_gmail_website'; 
-$username = 'if0_42250501 '; 
-$password = 'EZPllsFUAvSTO'; 
-// =========================================================
-
+$host = 'localhost';
+$dbname = 'gmail_website';
+$username = 'root
+';
+$password = '';
 try {
     // Create PDO connection
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

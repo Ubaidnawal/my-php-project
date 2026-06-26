@@ -1,7 +1,7 @@
 <?php
 // submit_complaint.php
 session_start();
-require_once 'includes/db_connect.php'; // aapki existing db connection
+require_once __DIR__ . '/../includes/db_connect.php'; // aapki existing db connection
 
 $errors = [];
 

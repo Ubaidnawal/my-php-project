@@ -7,13 +7,13 @@
  * Get the role level as an integer for comparison.
  */
 function get_role_level(?string $role): int {
-    return match ($role) {
-        'Super Admin' => 4,
-        'Admin'       => 3,
-        'Manager'     => 2,
-        'Staff'       => 1,
-        default       => 0,
-    };
+    switch ($role) {
+        case 'Super Admin': return 4;
+        case 'Admin':       return 3;
+        case 'Manager':     return 2;
+        case 'Staff':       return 1;
+        default:            return 0;
+    }
 }
 
 /**
