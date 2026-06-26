@@ -1,19 +1,24 @@
-FROM php:8.2-apache-bookworm
+FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd \
-    && docker-php-ext-install pdo pdo_mysql mysqli gd \
-    && a2enmod rewrite \
-    && apt-get clean
+RUN set -eux \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libpng-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli gd \
+    && a2enmod rewrite
 
-RUN a2dismod mpm_event && a2enmod mpm_prefork
+# Cleanly handle MPM - disable event, enable prefork
+RUN set -eux \
+    && a2dismod mpm_event 2>/dev/null || true \
+    && a2enmod mpm_prefork
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html/
-RUN chown -R www-data:www-data /var/www/html/
-RUN chmod -R 755 /var/www/html/
+RUN chown -R www-data:www-data /var/www/html/ && \
+    chmod -R 755 /var/www/html/
 
 EXPOSE 80
