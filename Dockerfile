@@ -1,8 +1,7 @@
 FROM php:8.1-apache
 
 # Fix MPM conflict - remove all MPM enabled configs and enable only prefork
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
-    rm -f /etc/apache2/mods-enabled/mpm_worker.* \
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.* && \
     a2enmod mpm_prefork
 
 # Enable mod_rewrite
