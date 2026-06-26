@@ -11,11 +11,9 @@ RUN set -eux \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli gd \
     && a2enmod rewrite
 
-# Fix MPM by removing conflicting config AND symlinks
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
-          /etc/apache2/mods-enabled/mpm_worker.* && \
-    rm -f /etc/apache2/mods-available/mpm_event.* \
-          /etc/apache2/mods-available/mpm_worker.* && \
+# Fix MPM: sed out all conflicting LoadModule lines for MPMs, keep prefork
+RUN sed -i '/mpm_event/s/^/#/' /etc/apache2/mods-enabled/mpm_event.load 2>/dev/null || true && \
+    sed -i '/mpm_worker/s/^/#/' /etc/apache2/mods-enabled/mpm_worker.load 2>/dev/null || true && \
     a2enmod mpm_prefork
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
