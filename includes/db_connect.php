@@ -1,13 +1,13 @@
 <?php
 // includes/db_connect.php
-// Supports: local dev (hardcoded) ↔ Railway (environment variables)
-// Railway auto-injects: MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
+// Supports: local dev ↔ Railway (environment variables)
+// Railway MySQL injects: MYSQLHOST, MYSQLUSER, MYSQLPASSWORD, MYSQLDATABASE, MYSQLPORT
 
-$host     = getenv('MYSQL_HOST')     ?: 'localhost';
-$port     = getenv('MYSQL_PORT')     ?: '3306';
-$dbname   = getenv('MYSQL_DATABASE') ?: 'gmail_website';
-$username = getenv('MYSQL_USER')     ?: 'root';
-$password = getenv('MYSQL_PASSWORD') ?: '';
+$host     = getenv('MYSQLHOST')     ?: getenv('MYSQL_HOST')     ?: 'localhost';
+$port     = getenv('MYSQLPORT')     ?: getenv('MYSQL_PORT')     ?: '3306';
+$dbname   = getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: 'gmail_website';
+$username = getenv('MYSQLUSER')     ?: getenv('MYSQL_USER')     ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD') ?: '';
 
 try {
     $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
