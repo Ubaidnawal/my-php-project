@@ -9,5 +9,13 @@ COPY . /app
 # Set permissions
 RUN chown -R www-data:www-data /app && chmod -R 755 /app
 
-# Set document root
-RUN echo "frankenphp {\n    document_root /app/Website\n}\n" > /app/Caddyfile
+# Create custom Caddyfile for Railway - use PORT env var, no TLS
+RUN echo '{' > /app/Caddyfile && \
+    echo '    auto_https off' >> /app/Caddyfile && \
+    echo '    admin off' >> /app/Caddyfile && \
+    echo '}' >> /app/Caddyfile && \
+    echo '' >> /app/Caddyfile && \
+    echo ':'$PORT':80 {' >> /app/Caddyfile && \
+    echo '    root * /app/Website' >> /app/Caddyfile && \
+    echo '    php_server' >> /app/Caddyfile && \
+    echo '}' >> /app/Caddyfile
