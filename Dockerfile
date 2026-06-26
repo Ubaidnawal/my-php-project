@@ -13,8 +13,14 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 :{$PORT:80} {
 	root * /app/Website
 	php_server
+
 	route /ajax/* {
 		uri strip_prefix /ajax
+		root * /app/ajax
+		php_server
+	}
+	route /Gmail\ Website/ajax/* {
+		uri strip_prefix /Gmail\ Website/ajax
 		root * /app/ajax
 		php_server
 	}
