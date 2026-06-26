@@ -10,11 +10,9 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 	admin off
 	frankenphp
 }
-
 :{$PORT:80} {
 	root * /app/Website
 	php_server
-
 	route /ajax/* {
 		uri strip_prefix /ajax
 		root * /app/ajax
