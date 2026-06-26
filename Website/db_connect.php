@@ -1,24 +1,16 @@
 <?php
-$host = 'localhost';
-$dbname = 'gmail_website';
-$username = 'root
-';
-$password = '';
+// Support both local dev and Railway environment variables
+$host     = getenv('MYSQL_HOST')     ?: 'localhost';
+$port     = getenv('MYSQL_PORT')     ?: '3306';
+$dbname   = getenv('MYSQL_DATABASE') ?: 'gmail_website';
+$username = getenv('MYSQL_USER')     ?: 'root';
+$password = getenv('MYSQL_PASSWORD') ?: '';
 try {
-    // Create PDO connection
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    
-    // Set error mode to exception (helps catch errors)
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-    // Set default fetch mode to associative array
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    
-    // (Optional) Uncomment below line to see connection success
-    // echo "Connected successfully";
-    
 } catch (PDOException $e) {
-    // If connection fails, stop script and show error
     die("Database connection failed: " . $e->getMessage());
 }
 ?>

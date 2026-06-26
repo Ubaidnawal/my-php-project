@@ -1,15 +1,17 @@
 <?php
 // includes/db_connect.php
-// 🔴 IMPORTANT: Replace with your AwardSpace MySQL details
-//    AwardSpace Dashboard → Hosting Tools → MySQL Databases
+// Supports: local dev (hardcoded) ↔ Railway (environment variables)
+// Railway auto-injects: MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
 
-$host     = 'localhost';
-$dbname   = 'gmail_website';
-$username = 'root';
-$password = '';
+$host     = getenv('MYSQL_HOST')     ?: 'localhost';
+$port     = getenv('MYSQL_PORT')     ?: '3306';
+$dbname   = getenv('MYSQL_DATABASE') ?: 'gmail_website';
+$username = getenv('MYSQL_USER')     ?: 'root';
+$password = getenv('MYSQL_PASSWORD') ?: '';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
