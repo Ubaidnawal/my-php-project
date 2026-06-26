@@ -11,10 +11,12 @@ RUN set -eux \
     && docker-php-ext-install -j$(nproc) pdo pdo_mysql mysqli gd \
     && a2enmod rewrite
 
-# Cleanly handle MPM - disable event, enable prefork
-RUN set -eux \
-    && a2dismod mpm_event 2>/dev/null || true \
-    && a2enmod mpm_prefork
+# Fix MPM: remove conflicting symlinks
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
+          /etc/apache2/mods-enabled/mpm_event.conf \
+          /etc/apache2/mods-enabled/mpm_worker.load \
+          /etc/apache2/mods-enabled/mpm_worker.conf && \
+    a2enmod mpm_prefork
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html/
