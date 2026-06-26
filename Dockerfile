@@ -8,6 +8,7 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 	admin off
 	frankenphp
 }
+
 :{$PORT:80} {
 	root * /app/Website
 	php_server
@@ -31,4 +32,5 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 		file_server
 	}
 }
+
 CADDY
