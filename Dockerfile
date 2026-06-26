@@ -2,6 +2,7 @@ FROM dunglas/frankenphp:1-php8.2
 RUN install-php-extensions pdo pdo_mysql mysqli
 COPY . /app
 RUN chown -R www-data:www-data /app && \
+    ln -s /app/Image /app/Website/Image && \
     rm -rf /app/.git
 RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 {
@@ -23,11 +24,6 @@ RUN cat > /etc/frankenphp/Caddyfile << 'CADDY'
 		uri strip_prefix /admin
 		root * /app/admin
 		php_server
-	}
-	route /Image/* {
-		header -Content-Type
-		root * /app/Image
-		file_server
 	}
 }
 CADDY
