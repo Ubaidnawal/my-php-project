@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y \
     && a2enmod rewrite \
     && apt-get clean
 
+RUN a2dismod mpm_event && a2enmod mpm_prefork
+
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY . /var/www/html/
 RUN chown -R www-data:www-data /var/www/html/
